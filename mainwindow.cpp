@@ -143,9 +143,11 @@ void MainWindow::redrawPlots()
                 seriesRect1 = new QLineSeries();
                 seriesRect2 = new QLineSeries();
             }
-
-            *seriesRect1 << QPoint(i * rectWidth, yMin) << QPointF((i+1) * rectWidth, yMin);
+            *seriesRect1 << QPointF(i * rectWidth, yMin) << QPointF((i + 1) * rectWidth, yMin);
             *seriesRect2 << QPointF(i * rectWidth, yMin + rectHeight) << QPointF((i + 1) * rectWidth, yMin + rectHeight);
+
+            //*seriesRect1 << QPoint(i * rectWidth, yMin) << QPointF((i+1) * rectWidth, yMin);
+            //*seriesRect2 << QPointF(i * rectWidth, yMin + rectHeight) << QPointF((i + 1) * rectWidth, yMin + rectHeight);
 
             if(i == dataTableModel->rowCount() || !selection->isRowSelected(i+1))
             {

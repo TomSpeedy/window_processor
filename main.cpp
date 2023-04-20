@@ -7,10 +7,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    QFile stylesheetFile("./themes/Eclippy.qss");
-    stylesheetFile.open(QFile::ReadOnly);
-    QString stylesheet = QLatin1String(stylesheetFile.readAll());
-    a.setStyleSheet(stylesheet);
+    //QFile stylesheetFile("./themes/Eclippy.qss");
+    //stylesheetFile.open(QFile::ReadOnly);
+    //QString stylesheet = QLatin1String(stylesheetFile.readAll());
+    //a.setStyleSheet(stylesheet);
 
     w.show();
 
