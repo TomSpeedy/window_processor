@@ -36,7 +36,7 @@ find_library(onnx_library onnxruntime
 
 
 if (NOT CLUSTERER_LIBRARY)
-    message(FATAL_ERROR "Clusterer library not found")
+    message(FATAL_ERROR "Clusterer library not found, please set CLUSTERER_PATH variable")
 endif()
 
 set(PROJECT_SOURCES
