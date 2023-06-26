@@ -85,13 +85,22 @@ void Controller::computeWindows(bool useRam)
             std::filesystem::create_directory("temp");
         //benchmarker* bench = new benchmarker(data_file, calib_folder, temp_output.toStdString());
         //
-        model_executor * executor = new model_executor(std::vector<std::string> {data_file}, std::vector<std::string>{calib_folder}, temp_output.toStdString());
+        try
+        {
+        model_executor executor = model_executor(std::vector<std::string> {data_file}, std::vector<std::string>{calib_folder}, temp_output.toStdString());
         model_runner::recurring = false;
         model_runner::print = true;
         node_args n_args;
         n_args["window_computer"]["window_size"] = std::to_string(mainWindow->ui->windowSizeTextBox->text().toDouble() * 1000000);
         n_args["window_computer"]["diff_window_size"] = std::to_string(mainWindow->ui->diffLineEdit->text().toDouble() * 1000000);
-        model_runner::run_model(model_runner::model_name::WINDOW_COMPUTER, executor, 1, n_args);
+        model_runner::run_model(model_runner::model_name::WINDOW_COMPUTER, &executor, 1, n_args);
+
+        }
+        catch(const std::invalid_argument & ex)
+        {
+            informMessageBox(QString("Error occured: ") +  QString(ex.what()));
+            return;
+        }
         //delete tableModel;
         mainWindow->ui->tableView->reset();
         tableModel->set(&temp_output);
@@ -107,7 +116,7 @@ void Controller::computeWindows(bool useRam)
         mainWindow->ui->loadedDataGroupBox->setVisible(true);
         informMessageBox("Window features loaded successfully");
         //delete bench;
-        delete executor;
+
 }
 QString generateTimestamp()
 {

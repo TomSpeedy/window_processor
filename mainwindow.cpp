@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     controller = new Controller(this, filterWindow, dataTableModel);
     ui->windowSizeTextBox->setText("200");
     ui->windowSizeTextBox->setValidator(new QDoubleValidator());
+    ui->diffLineEdit->setValidator(new QDoubleValidator());
     QObject::connect(ui->computeWindowsButton, SIGNAL(clicked()), controller, SLOT(computeWindows()));
     QObject::connect(ui->normalizePropertiesCheckBox, SIGNAL(clicked(bool)), controller, SLOT(normalizeCheckBoxChanged(bool)));
     QObject::connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -34,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->calibTextBox->setText("/home/tomas/MFF/DT/clusterer/test_data/calib/F4-W00076/");
     ui->inputTextBox->setText("/home/tomas/MFF/DT/clusterer_data/pion/pions_180GeV_deg_0.txt");
     ui->chartView->setRubberBand(QChartView::HorizontalRubberBand);
-
 
 }
 
@@ -126,7 +126,7 @@ void MainWindow::redrawPlots()
     }
 
     chart->createDefaultAxes();
-    chart->setTheme(QChart::ChartThemeDark);
+    //chart->setTheme(QChart::ChartThemeDark);
     //mark row selection
     double rectWidth = (dynamic_cast<QValueAxis*>(chart->axisX())->max() - dynamic_cast<QValueAxis*>(chart->axisX())->min()) / (double)dataTableModel->rowCount();
     double rectHeight = dynamic_cast<QValueAxis*>(chart->axisY())->max() - dynamic_cast<QValueAxis*>(chart->axisY())->min();

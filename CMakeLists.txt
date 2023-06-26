@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(window_processor VERSION 0.1 LANGUAGES CXX)
 
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -12,6 +13,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Charts DataVisualization PrintSupport)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Charts DataVisualization PrintSupport)
+qt_standard_project_setup()
 #message(FATAL_ERROR ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(NOT DEFINED ENV{CLUSTERER_PATH})
@@ -20,6 +22,7 @@ endif()
 if($ENV{CLUSTERER_PATH} MATCHES [^/\\]$)
     set(ENV{CLUSTERER_PATH} ENV{CLUSTERER_PATH}/)
 endif()
+
 set(clusterer_include_dir $ENV{CLUSTERER_PATH}clusterer/include/)
 set(onnx_include_dir $ENV{CLUSTERER_PATH}clusterer/onnxruntime-linux-x64-1.14.1/include/)
 if (NOT EXISTS ${clusterer_include_dir})
@@ -27,17 +30,21 @@ if (NOT EXISTS ${clusterer_include_dir})
 endif()
 
 
-find_library(clusterer_library lcclusterer
-    PATHS $ENV{CLUSTERER_PATH}build/lib/)
+find_library(clusterer_library lclusterer
+    PATHS $ENV{CLUSTERER_PATH}clusterer/build/lib/)
 
 find_library(onnx_library onnxruntime
-    PATHS $ENV{CLUSTERER_PATH}onnxruntime-linux-x64-1.14.1/lib/;$ENV{CLUSTERER_PATH}build/packages/Microsoft.ML.OnnxRuntime.1.15.1/runtimes/win-x64/native/;$ENV{ONNX_LIBRARY_PATH})
+    PATHS $ENV{CLUSTERER_PATH}clusterer/onnxruntime-linux-x64-1.14.1/lib/;$ENV{CLUSTERER_PATH}clusterer/build/packages/Microsoft.ML.OnnxRuntime.1.15.1/runtimes/win-x64/native/;$ENV{ONNX_LIBRARY_PATH})
 
 
 
-if (NOT CLUSTERER_LIBRARY)
+if (NOT clusterer_library)
     message(FATAL_ERROR "Clusterer library not found, please set CLUSTERER_PATH variable")
 endif()
+if (NOT onnx_library)
+    message(FATAL_ERROR "Onnx library not found, please set ${ONNX_LIBRARY_PATH} variable")
+endif()
+
 
 set(PROJECT_SOURCES
         main.cpp
@@ -79,9 +86,38 @@ endif()
 
 #target_compile_features(window_processor PRIVATE cxx_std_17)
 
+#add_custom_command(
+#    TARGET window_processor POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#        $ENV{CLUSTERER_PATH}clusterer/build/lib/lclusterer.dll
+#        $<TARGET_FILE_DIR:window_processor>
+#)
+
+if (WIN32)
+    add_custom_command(
+        TARGET window_processor POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $ENV{CLUSTERER_PATH}clusterer/build/packages/Microsoft.ML.OnnxRuntime.1.15.1/runtimes/win-x64/native/onnxruntime.dll
+        $<TARGET_FILE_DIR:window_processor>
+    )
+    add_custom_command(
+        TARGET window_processor POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:window_processor>
+        $<TARGET_FILE_DIR:window_processor>
+        COMMAND_EXPAND_LISTS)
+
+    add_custom_command(
+        TARGET window_processor POST_BUILD
+        COMMAND windeployqt --dir 
+        $<TARGET_FILE_DIR:window_processor> 
+        $<TARGET_FILE_DIR:window_processor>/window_processor.exe
+        )
+endif()
+
 target_include_directories(window_processor PUBLIC ${clusterer_include_dir})
 target_include_directories(window_processor PUBLIC ${onnx_include_dir})
-
+#message(FATAL_ERROR ${Qt6Charts_LIBRARIES})
 target_link_libraries(window_processor PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::DataVisualization Qt${QT_VERSION_MAJOR}::PrintSupport ${clusterer_library} ${onnx_library})
 set_target_properties(window_processor PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -90,6 +126,8 @@ set_target_properties(window_processor PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+
 
 
 install(TARGETS window_processor
