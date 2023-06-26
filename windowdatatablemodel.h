@@ -3,8 +3,13 @@
 
 #include <QAbstractTableModel>
 #include <QVector>
-#include "../clusterer/include/data_nodes/analysis/default_window_feature_vector.h"
-#include "../clusterer/include/data_structs/mm_hit.h"
+#include <iostream>
+#include <fstream>
+//#include "include/data_nodes/window_processing/default_window_feature_vector.h"
+//#include "default_window_feature_vector.h"
+
+#include "data_nodes/window_processing/default_window_feature_vector.h"
+#include "data_structs/mm_hit.h"
 
 class WindowDataTableModel : public QAbstractTableModel
 {

@@ -32,6 +32,7 @@ public slots:
     void closeFiltersClicked();
     void applyFiltersClicked();
     void view2DHistogramClicked();
+    void selectComplementClicked();
     bool shouldPrintHeader(const QString & filename);
 };
 

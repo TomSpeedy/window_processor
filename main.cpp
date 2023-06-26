@@ -2,6 +2,8 @@
 #include "controller.h"
 #include <QApplication>
 #include <QFile>
+#include "fileedit.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

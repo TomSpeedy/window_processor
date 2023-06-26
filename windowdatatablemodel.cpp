@@ -1,8 +1,8 @@
 #include "windowdatatablemodel.h"
-
-#include <QMessageBox>
 #include <iostream>
 #include <fstream>
+#include <QMessageBox>
+
 #include <QFile>
 #include <QVector>
 #include <QMap>
@@ -60,13 +60,15 @@ void WindowDataTableModel::set(QString * inputFilename)
         mBox.setText("Input file cannot be read - " + *inputFilename + "\" ");
         mBox.exec();
     }
-    QTextStream window_stream(&window_file);
+    std::ifstream window_stream(inputFilename->toStdString());
     FeatureVectType featVect;
     data_.clear();
-    while(!window_stream.atEnd())
+    while(window_stream.peek() != EOF)
     {
         window_stream >> featVect;
         data_.push_back(featVect);
+        std::string line;
+        std::getline(window_stream, line);
         if(maxValues.size() == 0)
         {
             minValues = QVector<double>(data_[0].attribute_names().size(), std::numeric_limits<double>::max());
@@ -74,11 +76,10 @@ void WindowDataTableModel::set(QString * inputFilename)
         }
         for(int col_index = 0; col_index < data_[0].attribute_names().size() ; ++col_index)
         {
-            QString dataStr = QString::fromStdString(data_.last().str()[col_index]).replace(",", ".");
-            bool success = false;
-            double dataDouble = dataStr.toDouble(&success);
-            if(success)
+            auto attribute_name = data_[0].attribute_names()[col_index];
+            if(!data_[0].is_vector(attribute_name))
             {
+                double dataDouble = data_.last().get_scalar(attribute_name);
                 if(maxValues[col_index] < dataDouble)
                     maxValues[col_index] = dataDouble;
                 if(minValues[col_index] > dataDouble)
@@ -129,20 +130,37 @@ QVariant WindowDataTableModel::data(const QModelIndex &index, int role) const
     double dataDouble;
     QString dataStr;
     bool success;
+    std::string target_attrib;
     switch(role)
     {
     case Qt::DisplayRole:
         if(!loaded_)
                 return QVariant(index.row() + index.column());
-        dataStr = QString::fromStdString(data_[index.row()].str()[index.column()]).replace(",", ".");
-        success = false;
-        dataDouble = dataStr.toDouble(&success);
-        if(success)
+        target_attrib = FeatureVectType::attribute_names()[index.column()];
+        if(data_[index.row()].is_vector(target_attrib))
         {
+            std::vector<double> vectorData = data_[index.row()].get_vector(target_attrib);
+
+            QString vectorStr = "[";
+            vectorStr.reserve(vectorData.size() * 6);
+            for (int i = 0; i < vectorData.size(); ++i)
+            {
+                vectorStr.append(QString::number(vectorData[i]));
+                vectorStr.append(" ");
+            }
+            vectorStr.append("]");
+            return vectorStr;
+        }
+        else
+        {
+            double dataDouble = data_[index.row()].get_scalar(target_attrib);
+            if(index.column() == 0)
+            dataDouble /= 1000000;
             if (normalizeData)
                 return (dataDouble - minValues[index.column()])/(maxValues[index.column()] - minValues[index.column()]);
             return dataDouble;
         }
+
         return dataStr;
         break;
     case Qt::TextAlignmentRole:
@@ -168,11 +186,10 @@ QVector<size_t> WindowDataTableModel::getRowsBySelectors(QMap<QString, WindowDat
         for (size_t attributeIndex = 0; attributeIndex < FeatureVectType::attribute_names().size(); attributeIndex ++)
         {
             auto attributeName = QString::fromStdString(FeatureVectType::attribute_names()[attributeIndex]);
-            QString dataStr = QString::fromStdString(data_[rowIndex].str()[attributeIndex]).replace(",", ".");
-            bool success = false;
-            double dataDouble = dataStr.toDouble(&success);
-            if (success)
+
+            if (!data_[0].is_vector(attributeName.toStdString()))
             {
+                double dataDouble = data_[rowIndex].get_scalar(attributeName.toStdString());
                 if(selectors.contains(attributeName) && ! selectors[attributeName](dataDouble))
                 {
                     shouldSelect = false;
@@ -199,6 +216,5 @@ bool WindowDataTableModel::isVectorProperty(const QString & propertyName) const
 {
     if (data_.size() == 0)
         return false;
-    using dataVector = std::vector<double>;
-    return std::holds_alternative<dataVector>(data_[0].get_value(propertyName.toStdString()));
+    return data_[0].is_vector(propertyName.toStdString());
 }

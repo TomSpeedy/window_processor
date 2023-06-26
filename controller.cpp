@@ -3,11 +3,12 @@
 #include "./ui_mainwindow.h"
 #include "filterselectionwindow.h"
 #include <QtDataVisualization>
-#include "../clusterer/include/data_flow/dataflow_controller.h"
-#include "../clusterer/include/benchmark/benchmarker.h"
-#include "../clusterer/include/execution/executor.h"
-#include "../clusterer/include/execution/model_selector.h"
-
+//#include "../clusterer/include/data_flow/dataflow_controller.h"
+//#include "../clusterer/include/execution/executor.h"
+//#include "../clusterer/include/execution/model_runner.h"
+#include "execution/executor.h"
+#include "execution/model_runner.h"
+#include "data_flow/dataflow_controller.h"
 //expects to obtain UI that is fully setup - containing tableView
 Controller::Controller(MainWindow * mainWindow, FilterSelectionWindow * filterWindow, WindowDataTableModel* tableModel) :
     tableModel(tableModel),
@@ -84,9 +85,13 @@ void Controller::computeWindows(bool useRam)
             std::filesystem::create_directory("temp");
         //benchmarker* bench = new benchmarker(data_file, calib_folder, temp_output.toStdString());
         //
-        model_executor * executor = new model_executor(std::vector<std::string> {data_file}, calib_folder, temp_output.toStdString());
-
-        model_selector::select_model(model_selector::model_name::WINDOW_COMPUTER, executor, 1, "", mainWindow->ui->windowSizeTextBox->text().toDouble() * 1000000);
+        model_executor * executor = new model_executor(std::vector<std::string> {data_file}, std::vector<std::string>{calib_folder}, temp_output.toStdString());
+        model_runner::recurring = false;
+        model_runner::print = true;
+        node_args n_args;
+        n_args["window_computer"]["window_size"] = std::to_string(mainWindow->ui->windowSizeTextBox->text().toDouble() * 1000000);
+        n_args["window_computer"]["diff_window_size"] = std::to_string(mainWindow->ui->diffLineEdit->text().toDouble() * 1000000);
+        model_runner::run_model(model_runner::model_name::WINDOW_COMPUTER, executor, 1, n_args);
         //delete tableModel;
         mainWindow->ui->tableView->reset();
         tableModel->set(&temp_output);
@@ -188,3 +193,29 @@ void Controller::selectionChanged(const QItemSelection & selected, const QItemSe
     mainWindow->redrawPlots();
 }
 
+void Controller::selectComplementClicked()
+{
+    auto selectionModel = mainWindow->ui->tableView->selectionModel();
+    auto selection = mainWindow->ui->tableView->selectionModel()->selection();
+    auto selectedColumns = selectionModel->selectedColumns();
+    auto selected = QItemSelection();
+    auto deselected = QItemSelection();
+    for (int rowIndex = 0; rowIndex < tableModel->rowCount(); ++rowIndex)
+    {
+        if(! selectionModel->isRowSelected(rowIndex))
+            selected.merge(QItemSelection(tableModel->index(rowIndex, 0),
+                                                  tableModel->index(rowIndex, tableModel->columnCount() - 1)), QItemSelectionModel::Select);
+        else
+            deselected.merge(QItemSelection(tableModel->index(rowIndex, 0),
+                                                  tableModel->index(rowIndex, tableModel->columnCount() - 1)), QItemSelectionModel::Deselect);
+
+    }
+    selectionModel->select(selection, QItemSelectionModel::Deselect);
+    selectionModel->select(selected, QItemSelectionModel::Select);
+    //selectionModel->select(deselected, QItemSelectionModel::Deselect);
+    for(int colIndex = 0; colIndex < selectedColumns.size(); ++colIndex)
+    {
+        //selectionModel->select(selectedColumns[colIndex], QItemSelectionModel::Select);
+    }
+    mainWindow->redrawPlots();
+}

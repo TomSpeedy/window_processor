@@ -29,9 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(filterWindow->applyFiltersButton, SIGNAL(clicked()), controller, SLOT(applyFiltersClicked()));
     QObject::connect(filterWindow->closeFiltersButton, SIGNAL(clicked()), controller, SLOT(closeFiltersClicked()));
     QObject::connect(ui->view2DHistogramButton, SIGNAL(clicked()), controller, SLOT(view2DHistogramClicked()));
+    QObject::connect(ui->selectComplementButton, SIGNAL(clicked()), controller, SLOT(selectComplementClicked()));
     filterWindow->hide();
-    ui->calibTextBox->setText("/home/tomas/MFF/DT/clusterer/test_data/calib/");
-    ui->inputTextBox->setText("/home/tomas/MFF/DT/fieldData/SPS_beam/pions_180GeV_bias200V_120deg_angle_scan_after_widening_800s_F4-W00076.txt");
+    ui->calibTextBox->setText("/home/tomas/MFF/DT/clusterer/test_data/calib/F4-W00076/");
+    ui->inputTextBox->setText("/home/tomas/MFF/DT/clusterer_data/pion/pions_180GeV_deg_0.txt");
     ui->chartView->setRubberBand(QChartView::HorizontalRubberBand);
 
 
@@ -41,7 +42,7 @@ void MainWindow::redraw3DPlots()
 {
     if(dataTableModel->rowCount() < 1)
         return;
-    const QString attributeToPlot = "e_distrib[]";
+    const QString attributeToPlot = "e_distrib[[]]";
     const QString timeAttributeName = dataTableModel->columnNames()[0];
     auto targetColumnIndex = dataTableModel->columnNames().indexOf(attributeToPlot);
     using dataVector = std::vector<double>;
@@ -146,9 +147,6 @@ void MainWindow::redrawPlots()
             *seriesRect1 << QPointF(i * rectWidth, yMin) << QPointF((i + 1) * rectWidth, yMin);
             *seriesRect2 << QPointF(i * rectWidth, yMin + rectHeight) << QPointF((i + 1) * rectWidth, yMin + rectHeight);
 
-            //*seriesRect1 << QPoint(i * rectWidth, yMin) << QPointF((i+1) * rectWidth, yMin);
-            //*seriesRect2 << QPointF(i * rectWidth, yMin + rectHeight) << QPointF((i + 1) * rectWidth, yMin + rectHeight);
-
             if(i == dataTableModel->rowCount() || !selection->isRowSelected(i+1))
             {
                 rowSelectSeries = new QAreaSeries(seriesRect2, seriesRect1);
@@ -167,7 +165,6 @@ void MainWindow::redrawPlots()
 
     this->ui->chartView->setChart(chart);
     this->ui->chartView->setRenderHint(QPainter::Antialiasing);
-    //this->ui->chartView->setMinimumSize(480, 360);
     this->ui->chartView->setVisible(true);
 
 }
@@ -183,6 +180,9 @@ void MainWindow::setVectorComboBox()
 
 
 }
+
+
+
 MainWindow::~MainWindow()
 {
     delete ui;

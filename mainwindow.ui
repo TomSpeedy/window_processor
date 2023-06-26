@@ -6,135 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1313</width>
-    <height>1107</height>
+    <width>1980</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Window feature processor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="computeWindowsButton">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>160</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Compute Window</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="inputTextBox">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>441</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="placeholderText">
-     <string>/home/tomas/MFF/DT/clusterer/test_data/small/</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="browseInputButton">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>40</y>
-      <width>91</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Browse...</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="calibTextBox">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>120</y>
-      <width>441</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="placeholderText">
-     <string>/home/tomas/MFF/DT/clusterer/test_data/calib/</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="browseCalibButton">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>120</y>
-      <width>91</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Browse...</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="selectInputLabel">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>141</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select input burda file:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="selectInputLabel_2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>191</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select input calibration file:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="windowSizeTextBox">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>170</y>
-      <width>113</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="windowSizeLabel">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>170</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>WindowSize[ms]</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="loadedDataGroupBox">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>220</y>
-      <width>1251</width>
-      <height>781</height>
+      <x>10</x>
+      <y>210</y>
+      <width>1641</width>
+      <height>791</height>
      </rect>
     </property>
     <property name="title">
@@ -145,7 +31,7 @@
       <rect>
        <x>0</x>
        <y>30</y>
-       <width>1251</width>
+       <width>1600</width>
        <height>281</height>
       </rect>
      </property>
@@ -159,8 +45,8 @@
     <widget class="QPushButton" name="selectByFiltersButton">
      <property name="geometry">
       <rect>
-       <x>180</x>
-       <y>330</y>
+       <x>370</x>
+       <y>320</y>
        <width>221</width>
        <height>41</height>
       </rect>
@@ -226,7 +112,7 @@
       <rect>
        <x>-10</x>
        <y>390</y>
-       <width>1271</width>
+       <width>1611</width>
        <height>331</height>
       </rect>
      </property>
@@ -257,6 +143,201 @@
       <string>View 2D histogram</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="selectComplementButton">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>320</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select Complement</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="diffGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>10</y>
+      <width>441</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>2. (optional) Window differentiation </string>
+    </property>
+    <widget class="QLabel" name="differentiationLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Differentiation window size</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="diffLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>40</y>
+       <width>211</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="placeholderText">
+      <string>&lt;differentiation window size[ms]&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="selectInputGroupbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>591</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>1. Input selection</string>
+    </property>
+    <widget class="QLabel" name="selectInputLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select input burda file:</string>
+     </property>
+    </widget>
+    <widget class="FileEdit" name="inputTextBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>441</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>/home/tomas/MFF/DT/clusterer/test_data/small/</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="browseInputButton">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>50</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Browse...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="selectInputLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select input calibration file:</string>
+     </property>
+    </widget>
+    <widget class="FileEdit" name="calibTextBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>140</y>
+       <width>441</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>/home/tomas/MFF/DT/clusterer/test_data/calib/</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="browseCalibButton">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>140</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Browse...</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="computeWindowGroupbox">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>110</y>
+      <width>451</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>3. Compute window features</string>
+    </property>
+    <widget class="QLabel" name="windowSizeLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>WindowSize[ms]</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="windowSizeTextBox">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>50</y>
+       <width>113</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="computeWindowsButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>181</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Compute Window</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -264,7 +345,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1313</width>
+     <width>1980</width>
      <height>20</height>
     </rect>
    </property>
@@ -276,6 +357,11 @@
    <class>QChartView</class>
    <extends>QGraphicsView</extends>
    <header>QtCharts</header>
+  </customwidget>
+  <customwidget>
+   <class>FileEdit</class>
+   <extends>QTextEdit</extends>
+   <header>fileedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
