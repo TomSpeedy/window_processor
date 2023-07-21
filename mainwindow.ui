@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1980</width>
-    <height>1080</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>220</y>
       <width>1641</width>
       <height>791</height>
      </rect>
@@ -32,7 +32,7 @@
        <x>0</x>
        <y>30</y>
        <width>1600</width>
-       <height>281</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="cornerButtonEnabled">
@@ -46,7 +46,7 @@
      <property name="geometry">
       <rect>
        <x>370</x>
-       <y>320</y>
+       <y>310</y>
        <width>221</width>
        <height>41</height>
       </rect>
@@ -59,7 +59,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>330</y>
+       <y>310</y>
        <width>161</width>
        <height>31</height>
       </rect>
@@ -84,7 +84,7 @@
     <widget class="QTextEdit" name="fieldNameTextBox">
      <property name="geometry">
       <rect>
-       <x>800</x>
+       <x>790</x>
        <y>320</y>
        <width>181</width>
        <height>31</height>
@@ -98,7 +98,7 @@
      <property name="geometry">
       <rect>
        <x>1000</x>
-       <y>320</y>
+       <y>310</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -111,9 +111,9 @@
      <property name="geometry">
       <rect>
        <x>-10</x>
-       <y>390</y>
-       <width>1611</width>
-       <height>331</height>
+       <y>380</y>
+       <width>1600</width>
+       <height>270</height>
       </rect>
      </property>
      <property name="rubberBandSelectionMode">
@@ -124,7 +124,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>740</y>
+       <y>670</y>
        <width>121</width>
        <height>23</height>
       </rect>
@@ -134,7 +134,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>740</y>
+       <y>670</y>
        <width>131</width>
        <height>23</height>
       </rect>
@@ -147,7 +147,7 @@
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>320</y>
+       <y>310</y>
        <width>161</width>
        <height>41</height>
       </rect>
@@ -203,9 +203,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>591</width>
-      <height>191</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -234,7 +234,7 @@
       </rect>
      </property>
      <property name="placeholderText">
-      <string>/home/tomas/MFF/DT/clusterer/test_data/small/</string>
+      <string>&lt;Drag &amp; drop or type the path to burda file&gt;</string>
      </property>
     </widget>
     <widget class="QPushButton" name="browseInputButton">
@@ -260,7 +260,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Select input calibration file:</string>
+      <string>Select input calibration folder:</string>
      </property>
     </widget>
     <widget class="FileEdit" name="calibTextBox">
@@ -273,7 +273,7 @@
       </rect>
      </property>
      <property name="placeholderText">
-      <string>/home/tomas/MFF/DT/clusterer/test_data/calib/</string>
+      <string>&lt;Drag &amp; drop or type the path to the calibration folder&gt;</string>
      </property>
     </widget>
     <widget class="QPushButton" name="browseCalibButton">
@@ -295,7 +295,7 @@
      <rect>
       <x>610</x>
       <y>110</y>
-      <width>451</width>
+      <width>441</width>
       <height>111</height>
      </rect>
     </property>
@@ -324,6 +324,9 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="text">
+      <string>200</string>
+     </property>
     </widget>
     <widget class="QPushButton" name="computeWindowsButton">
      <property name="geometry">
@@ -339,13 +342,26 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="labelLoading">
+    <property name="geometry">
+     <rect>
+      <x>1067</x>
+      <y>100</y>
+      <width>131</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1980</width>
+     <width>1600</width>
      <height>20</height>
     </rect>
    </property>
