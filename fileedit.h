@@ -4,6 +4,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+//a custom File edit class to allow Drag&drop functionality
 class FileEdit : public QTextEdit
 {
     Q_OBJECT

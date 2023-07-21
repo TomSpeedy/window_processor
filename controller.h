@@ -8,7 +8,8 @@
 QT_BEGIN_NAMESPACE
 class MainWindow;
 QT_END_NAMESPACE
-
+//Controller from the MVC design pattern
+//handles computations and signals from UI
 class Controller : public QObject
 {
     Q_OBJECT

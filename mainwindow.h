@@ -9,6 +9,8 @@
 #include "filterselectionwindow.h"
 #pragma once
 
+//Ui implements the View from MVC model
+//It handles the GUI and forwards the received signals from user to controller
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,6 +25,8 @@ public:
     void redrawPlots();
     void redraw3DPlots();
     void setVectorComboBox();
+    void displayLoadingGif();
+    void hideLoadingGif();
 
 friend class Controller;
 private:
@@ -31,5 +35,6 @@ private:
     Controller* controller;
     WindowDataTableModel* dataTableModel;
     FilterSelectionWindow * filterWindow;
+    QLabel * loadingLabel = new QLabel();
 };
 #endif // MAINWINDOW_H

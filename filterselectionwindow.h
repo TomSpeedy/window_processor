@@ -2,14 +2,13 @@
 #define FILTERSELECTIONWINDOW_H
 
 #include <QWidget>
-//#include "mainwindow.h"
-//#include "controller.h"
 #include "ui_filterselectionwindow.h"
 #include <QPushButton>
 #include <functional>
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QCheckBox>
+//A user interface for selecting filters for window selection
 namespace Ui {
 class FilterSelectionWindow;
 }
@@ -20,6 +19,7 @@ class FilterSelectionWindow : public QWidget
     QVector<QString> filterNames;
 
 public:
+    //Child widgets
     QPushButton * applyFiltersButton;
     QPushButton * closeFiltersButton;
     QVector<QLineEdit*> fromTextEdits;
@@ -34,9 +34,6 @@ public:
     void display();
     QMap<QString, selectorType> getScalarSelectors();
     void clearForm();
-//friend class Controller;
-//friend class MainWindow;
-//private:
     Ui::FilterSelectionWindow *ui;
 };
 

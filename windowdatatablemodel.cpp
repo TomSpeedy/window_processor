@@ -154,8 +154,8 @@ QVariant WindowDataTableModel::data(const QModelIndex &index, int role) const
         else
         {
             double dataDouble = data_[index.row()].get_scalar(target_attrib);
-            if(index.column() == 0)
-            dataDouble /= 1000000;
+            if(index.column() == 0 && !normalizeData)
+                dataDouble /= 1000000;
             if (normalizeData)
                 return (dataDouble - minValues[index.column()])/(maxValues[index.column()] - minValues[index.column()]);
             return dataDouble;
@@ -199,7 +199,7 @@ QVector<size_t> WindowDataTableModel::getRowsBySelectors(QMap<QString, WindowDat
         }
         if(shouldSelect)
             selectedIndices.push_back(rowIndex);
-        std::cout << rowIndex << std::endl;
+        //std::cout << rowIndex << std::endl;
     }
 
     return selectedIndices;

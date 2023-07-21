@@ -4,7 +4,7 @@
 #include <memory>
 #include "filterselectionwindow.h"
 #include "plot_drawing/qcustomplot/qcustomplot.h"
-
+#include "QtConcurrent/QtConcurrent"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
                      controller, SLOT(selectionChanged(QItemSelection,QItemSelection)));
     QObject::connect(ui->browseInputButton, SIGNAL(clicked()), controller, SLOT(browseInputFile()));
     QObject::connect(ui->browseCalibButton, SIGNAL(clicked()), controller, SLOT(browseCalibFile()));
-    //TODO add more buttons + handlers on browse in controller
     QObject::connect(ui->saveSelectedButton, SIGNAL(clicked()), controller, SLOT(saveSelectedWindows()));
     QObject::connect(ui->selectByFiltersButton, SIGNAL(clicked()), controller, SLOT(openFiltersClicked()));
     QObject::connect(filterWindow->applyFiltersButton, SIGNAL(clicked()), controller, SLOT(applyFiltersClicked()));
@@ -32,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->view2DHistogramButton, SIGNAL(clicked()), controller, SLOT(view2DHistogramClicked()));
     QObject::connect(ui->selectComplementButton, SIGNAL(clicked()), controller, SLOT(selectComplementClicked()));
     filterWindow->hide();
-    ui->calibTextBox->setText("/home/tomas/MFF/DT/clusterer/test_data/calib/F4-W00076/");
-    ui->inputTextBox->setText("/home/tomas/MFF/DT/clusterer_data/pion/pions_180GeV_deg_0.txt");
+    //ui->calibTextBox->setText("/home/tomas/MFF/DT/clusterer/test_data/calib/F4-W00076/");
+    //ui->inputTextBox->setText("/home/tomas/MFF/DT/clusterer_data/pion/pions_180GeV_deg_0.txt");
     ui->chartView->setRubberBand(QChartView::HorizontalRubberBand);
 
 }
@@ -126,6 +125,7 @@ void MainWindow::redrawPlots()
     }
 
     chart->createDefaultAxes();
+
     //chart->setTheme(QChart::ChartThemeDark);
     //mark row selection
     double rectWidth = (dynamic_cast<QValueAxis*>(chart->axisX())->max() - dynamic_cast<QValueAxis*>(chart->axisX())->min()) / (double)dataTableModel->rowCount();
@@ -162,7 +162,7 @@ void MainWindow::redrawPlots()
     }
     //TODO problem - creates separate axis ranges for each series
     chart->createDefaultAxes();
-
+    chart->axes().front()->setTitleText(dataTableModel->columnNames()[0]);
     this->ui->chartView->setChart(chart);
     this->ui->chartView->setRenderHint(QPainter::Antialiasing);
     this->ui->chartView->setVisible(true);
@@ -181,8 +181,22 @@ void MainWindow::setVectorComboBox()
 
 }
 
-
-
+void MainWindow::displayLoadingGif()
+{
+    QMovie* loader = new QMovie("/home/tomas/MFF/DT/window_processor/images/loading.gif");
+    loader->setScaledSize(QSize(100, 100));
+    this->ui->labelLoading->setEnabled(true);
+    this->ui->labelLoading->show();
+    this->ui->labelLoading->setMovie(loader);
+    this->ui->labelLoading->setGeometry(this->ui->labelLoading->x(), this->ui->labelLoading->y(), 100, 100);
+    //QtConcurrent::run([loader](){loader->start();});
+    loader->start();
+}
+void MainWindow::hideLoadingGif()
+{
+    this->ui->labelLoading->hide();
+    //this->ui->labelLoading->setMovie(nullptr);
+}
 MainWindow::~MainWindow()
 {
     delete ui;
